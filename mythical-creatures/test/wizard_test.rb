@@ -4,61 +4,50 @@ require 'minitest/pride'
 require_relative '../lib/wizard'
 
 class WizardTest < Minitest::Test
+  def setup
+    @eric = Wizard.new("Eric")
+    @alex = Wizard.new("Alex")
+    @valerie = Wizard.new("Valerie", bearded: false)
+  end
+
   def test_has_name
-    wizard = Wizard.new("Eric")
-    assert_equal "Eric", wizard.name
+    assert_equal "Eric", @eric.name
   end
 
   def test_can_have_different_name
-    skip
-    wizard = Wizard.new("Alex")
-    assert_equal "Alex", wizard.name
+    assert_equal "Alex", @alex.name
   end
 
   def test_is_bearded_by_default
-    skip
-    wizard = Wizard.new("Ben")
-    assert wizard.bearded?
+    assert_equal true, @eric.bearded?
   end
 
   def test_is_not_always_bearded
-    skip
-    wizard = Wizard.new("Valerie", bearded: false)
-    refute wizard.bearded?
+    assert_equal false, @valerie.bearded?
   end
 
   def test_has_root_powers
-    skip
-    wizard = Wizard.new("Sarah", bearded: false)
-    assert_equal "sudo chown ~/bin", wizard.incantation("chown ~/bin")
+    assert_equal "sudo chown ~/bin", @valerie.incantation("chown ~/bin")
   end
 
   def test_has_lots_of_root_powers
-    skip
-    wizard = Wizard.new("Rob", bearded: false)
-    assert_equal "sudo rm -rf /home/mirandax", wizard.incantation("rm -rf /home/mirandax")
+    assert_equal "sudo rm -rf /home/mirandax", @alex.incantation("rm -rf /home/mirandax")
   end
 
   def test_starts_rested
-    skip
-    # create wizard
-    # .rested? returns true
+    assert_equal true, @valerie.rested?
   end
 
   def test_can_cast_spells
-    skip
-    # create wizard
-    # .cast returns "MAGIC MISSILE!"
+    assert_equal "MAGIC MISSILE!", @alex.cast
   end
 
   def test_gets_tired_after_casting_three_spells
-    skip
-    # create wizard
-    # casts spell twice
-    # check wizard is rested
-    # casts spell
-    # check wizard is not rested
+    2.times { @eric.cast }
+    assert_equal true, @eric.rested?
+
+    @eric.cast
+    assert_equal false, @eric.rested?
   end
 
 end
-
